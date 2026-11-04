@@ -17,7 +17,7 @@ ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 WORKDIR /app/backend
 
-RUN chmod +x /app/backend/entrypoint.sh
+RUN sed -i 's/\r$//' /app/backend/entrypoint.sh && chmod +x /app/backend/entrypoint.sh
 
 EXPOSE 8000
 

@@ -30,6 +30,7 @@ services:
       ENVIRONMENT: production
       SECRET_KEY: ${SECRET_KEY:-change_this_to_a_random_secure_key}
       BACKEND_CORS_ORIGINS: ${BACKEND_CORS_ORIGINS:-'["http://localhost"]'}
+      BACKEND_CORS_ORIGIN_REGEX: ${BACKEND_CORS_ORIGIN_REGEX:-'^https?://.*'}
     expose:
       - "8000"
 
@@ -41,6 +42,8 @@ services:
       - backend
     environment:
       NODE_ENV: production
+      BACKEND_INTERNAL_URL: http://backend:8000
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-}
     expose:
       - "3000"
 

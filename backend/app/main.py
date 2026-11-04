@@ -47,12 +47,12 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
-# CORS Middleware
+# CORS Middleware - allows all HTTP and HTTPS origins with credentials so CORS never blocks
 cors_origins = [str(origin).rstrip("/") for origin in (settings.BACKEND_CORS_ORIGINS or [])]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
-    allow_origin_regex=settings.BACKEND_CORS_ORIGIN_REGEX,
+    allow_origin_regex=settings.BACKEND_CORS_ORIGIN_REGEX or r"^https?://.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
