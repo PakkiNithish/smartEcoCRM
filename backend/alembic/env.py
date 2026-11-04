@@ -3,7 +3,7 @@ import sys
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import engine_from_config, pool, text
 
 # Ensure project root is in sys.path
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -58,6 +58,20 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
+        # PostgreSQL defaults alembic_version.version_num to VARCHAR(32).
+        # Ensure it is VARCHAR(255) so descriptive revision IDs never truncate or error.
+        try:
+            connection.execute(text("CREATE TABLE IF NOT EXISTS alembic_version (version_num VARCHAR(255) NOT NULL PRIMARY KEY)"))
+            connection.commit()
+        except Exception:
+            pass
+
+        try:
+            connection.execute(text("ALTER TABLE alembic_version ALTER COLUMN version_num TYPE VARCHAR(255)"))
+            connection.commit()
+        except Exception:
+            pass
+
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
