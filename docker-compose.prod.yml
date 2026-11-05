@@ -11,7 +11,6 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-crm_password_change_in_production}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-crm_user} -d ${POSTGRES_DB:-crm_db}"]
       interval: 5s
@@ -19,8 +18,8 @@ services:
       retries: 5
 
   backend:
-    image: ${DOCKER_BACKEND_IMAGE:-yourcompany/crm-backend:latest}
-    container_name: crm_backend
+    image: ${DOCKER_BACKEND_IMAGE:-smarteco/crm-backend:latest}
+    container_name: smarteco_crm_backend
     restart: always
     depends_on:
       postgres:
@@ -35,8 +34,8 @@ services:
       - "8000"
 
   frontend:
-    image: ${DOCKER_FRONTEND_IMAGE:-yourcompany/crm-frontend:latest}
-    container_name: crm_frontend
+    image: ${DOCKER_FRONTEND_IMAGE:-smarteco/crm-frontend:latest}
+    container_name: smarteco_crm_frontend
     restart: always
     depends_on:
       - backend
@@ -48,13 +47,11 @@ services:
       - "3000"
 
   nginx:
-    image: nginx:alpine
-    container_name: crm_nginx
+    image: ${DOCKER_NGINX_IMAGE:-smarteco/crm-nginx:latest}
+    container_name: smarteco_crm_nginx
     restart: always
     ports:
       - "${HTTP_PORT:-80}:80"
-    volumes:
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - backend
       - frontend

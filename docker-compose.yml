@@ -24,8 +24,8 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: ${DOCKER_BACKEND_IMAGE:-bitrix_crm_backend}
-    container_name: bitrix_crm_backend
+    image: ${DOCKER_BACKEND_IMAGE:-smarteco_crm_backend}
+    container_name: smarteco_crm_backend
     restart: unless-stopped
     depends_on:
       postgres:
@@ -41,8 +41,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: ${DOCKER_FRONTEND_IMAGE:-bitrix_crm_frontend}
-    container_name: bitrix_crm_frontend
+    image: ${DOCKER_FRONTEND_IMAGE:-smarteco_crm_frontend}
+    container_name: smarteco_crm_frontend
     restart: unless-stopped
     depends_on:
       - backend
@@ -53,8 +53,11 @@ services:
       - "${FRONTEND_PORT:-3000}:3000"
 
   nginx:
-    image: nginx:alpine
-    container_name: bitrix_crm_nginx
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: ${DOCKER_NGINX_IMAGE:-smarteco_crm_nginx}
+    container_name: smarteco_crm_nginx
     restart: unless-stopped
     ports:
       - "${HTTP_PORT:-80}:80"

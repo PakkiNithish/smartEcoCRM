@@ -97,12 +97,14 @@ npm run dev
    ```bash
    docker build -t <your-dockerhub-username>/crm-backend:latest ./backend
    docker build -t <your-dockerhub-username>/crm-frontend:latest ./frontend
+   docker build -t <your-dockerhub-username>/crm-nginx:latest ./docker/nginx
    ```
 
 2. **Push to Docker Hub**:
    ```bash
    docker push <your-dockerhub-username>/crm-backend:latest
    docker push <your-dockerhub-username>/crm-frontend:latest
+   docker push <your-dockerhub-username>/crm-nginx:latest
    ```
 
 3. **Deploy on Server**:
