@@ -18,7 +18,7 @@ services:
       retries: 5
 
   backend:
-    image: ${DOCKER_BACKEND_IMAGE:-smarteco/crm-backend:latest}
+    image: ${DOCKER_BACKEND_IMAGE:-istdockerhub/smarteco-crm-backend:latest}
     container_name: smarteco_crm_backend
     restart: always
     depends_on:
@@ -34,7 +34,7 @@ services:
       - "8000"
 
   frontend:
-    image: ${DOCKER_FRONTEND_IMAGE:-smarteco/crm-frontend:latest}
+    image: ${DOCKER_FRONTEND_IMAGE:-istdockerhub/smarteco-crm-frontend:latest}
     container_name: smarteco_crm_frontend
     restart: always
     depends_on:
@@ -47,7 +47,7 @@ services:
       - "3000"
 
   nginx:
-    image: ${DOCKER_NGINX_IMAGE:-smarteco/crm-nginx:latest}
+    image: ${DOCKER_NGINX_IMAGE:-istdockerhub/smarteco-crm-nginx:latest}
     container_name: smarteco_crm_nginx
     restart: always
     ports:
